@@ -28,6 +28,7 @@ def build_type():
 # Rules to build SRPM from SPEC
 def build_srpm_from_spec(spec):
     srpmpath = spec.source_package_path()
+    print '%s: LOGPREFIX = [%s]' % (srpmpath, spec.name())
     print '%s: %s %s' % (srpmpath, spec.specpath(),
                          " ".join(spec.source_paths()))
 
@@ -78,6 +79,7 @@ def build_rpm_from_srpm(spec):
 
     rpm_path = spec.binary_package_paths()[0]
     srpm_path = spec.source_package_path()
+    print '%s: LOGPREFIX = [%s]' % (rpm_path, spec.name())
     print '%s: %s' % (rpm_path, srpm_path)
 
 

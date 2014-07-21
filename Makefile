@@ -15,16 +15,13 @@ all: rpms srpm_repo
 # the chroot.	Without this we might generate foo-1.0.fc20.src.rpm
 # (Fedora host) and foo-1.0.el6.x86_64.rpm (CentOS chroot).
 %.src.rpm:
-	@echo [RPMBUILD] $@ 
-	@rpmbuild --quiet --define "_topdir ." \
-		--define "%dist $(DIST)" -bs $<
+	@unbuffer rpmbuild --define "_topdir ." --define "%dist $(DIST)" -bs $< | ts "$(LOGPREFIX) [RPMBUILD]"
 
 # Phony target to create repository metadata for the SRPMs.   This makes
 # it possible to add the SRPMS directory to yum.conf and use yumdownloader
 # to install source RPMs.
 srpm_repo: srpms
-	echo [CREATEREPO] SRPMS
-	@flock --timeout 30 ./SRPMS createrepo --quiet --update ./SRPMS
+	@unbuffer flock --timeout 30 ./SRPMS createrepo --update ./SRPMS | ts "$(LOGPREFIX) [CREATEREPO]"
 
 # Build one or more binary RPMs from a source RPM.   A typical source RPM
 # might produce a base binary RPM, a -devel binary RPM containing library
@@ -33,11 +30,8 @@ srpm_repo: srpms
 # a subsequent mock build for a package which depend on this one is able
 # to find and install it.
 %.rpm:
-	@echo [MOCK] $@
-	@mock --configdir=mock --quiet -r xenserver \
-		--resultdir=$(dir $@) --uniqueext=$(notdir $@) --rebuild $<
-	@echo [CREATEREPO] $@
-	@flock --timeout 30 ./RPMS createrepo --quiet --update ./RPMS
+	@unbuffer mock --configdir=mock -r xenserver --resultdir=$(dir $@) --uniqueext=$(notdir $@) --rebuild $< | ts "$(LOGPREFIX) [MOCK]"
+	@flock --timeout 30 ./RPMS createrepo --update ./RPMS | ts "$(LOGPREFIX) [CREATEREPO]"
 
 
 ############################################################################
@@ -50,10 +44,8 @@ srpm_repo: srpms
 # The conversion is basic, but works fairly well for straightforward Spec
 # files.
 %.dsc: 
-	@echo [MAKEDEB] $@
-	@scripts/deb/makedeb.py $<
-	@echo [UPDATEREPO] $@
-	@flock --timeout 30 ./SRPMS scripts/deb/updaterepo sources SRPMS
+	@unbuffer scripts/deb/makedeb.py $< | ts "$(LOGPREFIX) [MAKEDEB]"
+	@unbuffer flock --timeout 30 ./SRPMS scripts/deb/updaterepo sources SRPMS | ts "$(LOGPREFIX) [UPDATEREPO]"
 
 # Build one or more binary Debian packages from from a source package.
 # As with the RPM build, a typical source package might produce several
@@ -61,13 +53,12 @@ srpm_repo: srpms
 # binary package so that a subsequent build for a package which depends
 # on this one is able to find and install it.
 %.deb:
-	@echo [COWBUILDER] $@
-	@touch RPMS/Packages
-	@sudo cowbuilder --build \
+	@mkdir -p logs
+	@touch RPMS/Packages	
+	@sudo unbuffer cowbuilder --build \
 		--configfile pbuilder/pbuilderrc \
-		--buildresult RPMS $<
-	@echo [UPDATEREPO] $@
-	@flock --timeout 30 ./RPMS scripts/deb/updaterepo packages RPMS
+		--buildresult RPMS $< | ts "$(LOGPREFIX) [COWBUILDER]"
+	@unbuffer flock --timeout 30 ./RPMS scripts/deb/updaterepo packages RPMS | ts "$(LOGPREFIX) [UPDATEREPO]"
 
 
 ############################################################################

@@ -2,8 +2,7 @@
 set -eu
 
 echo "Configuring RPM-based build"
-
-DEPS="mock rpm-build createrepo python-argparse"
+DEPS="mock rpm-build createrepo python-argparse moreutils expect"
 rpm -q $DEPS >/dev/null 2>&1 || sudo yum install -y $DEPS
 
 echo -n "Writing mock configuration..."
