@@ -29,7 +29,7 @@ clean:
 # to install source RPMs.
 srpm_repo: srpms
 	@echo [CREATEREPO] SRPMS
-	@flock --timeout 30 ./SRPMS createrepo --quiet --update ./SRPMS
+	@flock --timeout 30 ./SRPMS createrepo_c --quiet --update ./SRPMS
 
 # Build one or more binary RPMs from a source RPM.   A typical source RPM
 # might produce a base binary RPM, a -devel binary RPM containing library
@@ -39,10 +39,10 @@ srpm_repo: srpms
 # to find and install it.
 %.rpm:
 	@echo [MOCK] $@
-	@mock --configdir=mock --quiet \
+	@planex-cache --configdir=mock --quiet \
 		--resultdir=$(dir $@) --uniqueext=$(notdir $@) --rebuild $<
 	@echo [CREATEREPO] $@
-	@flock --timeout 30 ./RPMS createrepo --quiet --update ./RPMS
+	@flock --timeout 30 ./RPMS createrepo_c --quiet --update ./RPMS
 
 
 ############################################################################
