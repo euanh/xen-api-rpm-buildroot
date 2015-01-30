@@ -52,7 +52,7 @@ gpgcheck=0
 Priority=1
 enabled=1
 
-[mock]
+[planex-repo]
 name=Mock output
 baseurl=file://@PWD@/RPMS
 gpgcheck=0
