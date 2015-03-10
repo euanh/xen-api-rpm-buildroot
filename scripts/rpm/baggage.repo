@@ -1,0 +1,4 @@
+[baggage]
+name=baggage
+baseurl=http://10.80.239.213:8080/job/euanh-xenserver-baggage/distribution=centos6/lastSuccessfulBuild/artifact/RPMS/
+gpgcheck=0
