@@ -9,10 +9,10 @@ XAPISRCBASEURL=${SRC_REPO_LOCATION:-file://$PWD/SRPMS/}
 sed \
     -e "s,@XAPIBASEURL@,${XAPIBASEURL},g" \
     -e "s,@XAPISRCBASEURL@,${XAPISRCBASEURL},g" \
-    scripts/rpm/xapi.repo.in > scripts/rpm/xapi.repo
+    scripts/rpm/xapi.repo.in > scripts/rpm/install-repos.d/xapi.repo
 
-for i in xapi Xen4CentOS ocaml-4.01 ; do
-    install -m 0644 scripts/rpm/$i.repo /etc/yum.repos.d/$i.repo
+for i in `ls scripts/rpm/install-repos.d/*.repo`; do
+    install -m 0644 $i /etc/yum.repos.d/`basename $i`
 done
 
 yum update -y
