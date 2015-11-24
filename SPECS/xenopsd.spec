@@ -21,7 +21,6 @@ BuildRequires:  ocaml-cohttp-devel
 BuildRequires:  forkexecd-devel
 BuildRequires:  ocaml-oclock-devel
 BuildRequires:  ocaml-uuidm-devel
-BuildRequires:  ocaml-qmp-devel
 BuildRequires:  ocaml-sexplib-devel
 BuildRequires:  ocaml-xen-lowlevel-libs-devel
 BuildRequires:  ocaml-xenstore-clients-devel
