@@ -5,7 +5,6 @@ Summary:        OCaml bindings to libnl
 License:        LGPL
 URL:            https://github.com/xapi-project/ocaml-netlink
 Source0:        https://github.com/xapi-project/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 BuildRequires:  libffi-devel
 BuildRequires:  libnl3
 BuildRequires:  ocaml
@@ -53,7 +52,7 @@ make install DESTDIR=%{buildroot}/%{_libdir}/ocaml
 %{_libdir}/ocaml/netlink/*.cmxa
 
 %changelog
-* Thu Apr 23 2015 Euan Harris <euan.harris@citrix.com> - 0.2.1-1
+* Tue Apr 21 2015 Jon Ludlam <jonathan.ludlam@citrix.com> - 0.2.1-1
 - Update to 0.2.1
 
 * Wed Oct 01 2014 David Scott <dave.scott@citrix.com> - 0.2.0-1
