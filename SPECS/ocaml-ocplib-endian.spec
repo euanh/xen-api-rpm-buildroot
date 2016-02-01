@@ -64,7 +64,7 @@ ocaml setup.ml -install
 
 %changelog
 * Fri Jan 30 2015 Euan Harris <euan.harris@citrix.com> - 0.5-1
-- Update to 0.8
+- Update to 0.5
 
 * Fri May 30 2014 Euan Harris <euan.harris@citrix.com> - 0.4-2
 - Split files correctly between base and devel packages
